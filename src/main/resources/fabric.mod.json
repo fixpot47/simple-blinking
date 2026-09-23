@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "simple_blinking",
+  "version": "${version}",
+  "name": "Simple Blinking",
+  "description": "A tiny client-side mod that adds natural blinking to your Minecraft skin.",
+  "authors": ["fixpot47"],
+  "contact": {
+    "sources": "https://github.com/fixpot47/simple-blinking"
+  },
+  "license": "All-Rights-Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.fixpot.simpleblinking.SimpleBlinkingClient"
+    ],
+    "modmenu": [
+      "dev.fixpot.simpleblinking.integration.SimpleBlinkingModMenu"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}
