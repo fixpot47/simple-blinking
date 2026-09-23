@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 
 public final class SimpleBlinkingClient implements ClientModInitializer {
 	public static final String MOD_ID = "simple_blinking";
@@ -31,7 +30,7 @@ public final class SimpleBlinkingClient implements ClientModInitializer {
 
 		openMenuKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
 			"key.simple_blinking.open_menu",
-			GLFW.GLFW_KEY_F7,
+			296,
 			category
 		));
 
