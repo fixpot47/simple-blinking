@@ -29,13 +29,12 @@ public final class SimpleBlinkingClient implements ClientModInitializer {
 			Identifier.fromNamespaceAndPath(MOD_ID, "main")
 		);
 
-		// Minecraft 26.3 switched keyboard input away from the old KEYSYM path.
-		// Register F7 as an actual KEYBOARD key so Controls displays "F7"
-		// instead of the raw translation key "key.keyboard.296".
+		// Minecraft 26.3 uses the SDL-compatible KEYBOARD input path.
+		// X is the default key for opening the Simple Blinking menu.
 		openMenuKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
 			"key.simple_blinking.open_menu",
 			InputConstants.Type.KEYBOARD,
-			InputConstants.KEY_F7,
+			InputConstants.KEY_X,
 			category
 		));
 

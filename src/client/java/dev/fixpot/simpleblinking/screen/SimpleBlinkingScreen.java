@@ -2,6 +2,7 @@ package dev.fixpot.simpleblinking.screen;
 
 import dev.fixpot.simpleblinking.SimpleBlinkingClient;
 import dev.fixpot.simpleblinking.config.BlinkConfig;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -133,7 +134,7 @@ public final class SimpleBlinkingScreen extends Screen {
 
 		graphics.text(
 			font,
-			SimpleBlinkingClient.skinManager().status() + "  |  F7: open/close",
+			SimpleBlinkingClient.skinManager().status() + "  |  X: open/close",
 			gridX,
 			gridY + GRID_SIZE + 70,
 			0xFF8F9AAA,
@@ -161,10 +162,10 @@ public final class SimpleBlinkingScreen extends Screen {
 			texture,
 			x,
 			y,
-			GRID_SIZE,
-			GRID_SIZE,
 			8,
 			8,
+			GRID_SIZE,
+			GRID_SIZE,
 			8,
 			8,
 			64,
@@ -177,10 +178,10 @@ public final class SimpleBlinkingScreen extends Screen {
 			texture,
 			x,
 			y,
-			GRID_SIZE,
-			GRID_SIZE,
 			40,
 			8,
+			GRID_SIZE,
+			GRID_SIZE,
 			8,
 			8,
 			64,
@@ -307,7 +308,7 @@ public final class SimpleBlinkingScreen extends Screen {
 
 	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-		if (event.button() == 0) {
+		if (event.button() == InputConstants.MOUSE_BUTTON_LEFT) {
 			int mouseX = (int)Math.floor(event.x());
 			int mouseY = (int)Math.floor(event.y());
 
