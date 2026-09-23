@@ -1,39 +1,25 @@
 # Simple Blinking 👀
 
-A lightweight client-side Fabric mod for Minecraft 26.3 that makes the player's skin blink naturally.
+Client-side Fabric mod for Minecraft 26.3 that adds smooth blinking to your own Minecraft skin.
 
-## Version 1.0.0 — in development
+## Simple Blinking 1.0.0
 
-The blink is **animated**, not a hard texture swap:
-
-1. eyelid smoothly closes;
-2. stays closed for a tiny moment;
-3. smoothly opens again.
-
-The animation uses an eased curve, so it slows near fully-open and fully-closed states instead of looking robotic.
-
-### Implemented
-- Fabric 26.3 project setup.
-- Persistent JSON config.
-- Natural ~2 second blink interval with small random variation.
-- Smooth close / hold / open animation controller.
-- In-menu "Preview blink" action.
-- Eye-pixel data model for 64x64 skins.
-- Automatic eyelid-color algorithm that samples the nearest opaque skin pixels around the selected eyes.
+- Shows your player model in the configuration screen.
+- Shows an enlarged 8x8 front-face picker using your current skin.
+- Click the exact eye pixels to select/deselect them.
+- Automatically samples an eyelid color from the closest opaque pixels around the selected eyes.
+- Also covers matching pixels on the hat/head overlay when needed.
+- Blinks naturally around every 2 seconds with a small random offset.
+- Smooth closing -> tiny closed hold -> smooth opening.
+- Only changes rendering on your client; the original skin file is never overwritten.
 - Mod Menu integration.
 
-### v1.0.0 work still in progress
-- Live skin preview inside the menu.
-- Click directly on the skin to select eye pixels.
-- Draw the animated eyelid over the selected pixels on the player model.
-- Preview the selected eyelid color before saving.
+### Default animation timing
 
-## Defaults
-
-- Blink interval: 2000 ms ± 250 ms
-- Close: 95 ms
+- Interval: 2000 ms +/- 250 ms
+- Closing: 95 ms
 - Closed hold: 45 ms
-- Open: 120 ms
+- Opening: 120 ms
 
 ## Requirements
 
@@ -41,4 +27,4 @@ The animation uses an eased curve, so it slows near fully-open and fully-closed 
 - Fabric Loader 0.19.5+
 - Fabric API 0.161.0+26.3
 - Java 25
-- Mod Menu is optional, but recommended.
+- Mod Menu is optional but recommended.

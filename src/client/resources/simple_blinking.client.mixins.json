@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "dev.fixpot.simpleblinking.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "AvatarRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

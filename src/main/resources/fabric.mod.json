@@ -3,7 +3,7 @@
   "id": "simple_blinking",
   "version": "${version}",
   "name": "Simple Blinking",
-  "description": "A tiny client-side mod that adds natural blinking to your Minecraft skin.",
+  "description": "Smooth, natural blinking for your Minecraft skin.",
   "authors": ["fixpot47"],
   "contact": {
     "sources": "https://github.com/fixpot47/simple-blinking"
@@ -18,6 +18,12 @@
       "dev.fixpot.simpleblinking.integration.SimpleBlinkingModMenu"
     ]
   },
+  "mixins": [
+    {
+      "config": "simple_blinking.client.mixins.json",
+      "environment": "client"
+    }
+  ],
   "depends": {
     "fabricloader": ">=0.19.5",
     "minecraft": "~26.3",
