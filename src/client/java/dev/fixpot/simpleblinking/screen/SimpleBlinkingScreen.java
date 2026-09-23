@@ -20,7 +20,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.world.item.SwingAnimationType;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -150,8 +149,8 @@ public final class SimpleBlinkingScreen extends Screen {
 			y,
 			GRID_SIZE,
 			GRID_SIZE,
-			8.0F,
-			8.0F,
+			8,
+			8,
 			8,
 			8,
 			64,
@@ -166,8 +165,8 @@ public final class SimpleBlinkingScreen extends Screen {
 			y,
 			GRID_SIZE,
 			GRID_SIZE,
-			40.0F,
-			8.0F,
+			40,
+			8,
 			8,
 			8,
 			64,
@@ -228,8 +227,6 @@ public final class SimpleBlinkingScreen extends Screen {
 				armed.leftHandItemState.clear();
 				armed.rightArmPose = HumanoidModel.ArmPose.EMPTY;
 				armed.leftArmPose = HumanoidModel.ArmPose.EMPTY;
-				armed.attackTime = 0.0F;
-				armed.swingAnimationType = SwingAnimationType.NONE;
 			}
 
 			if (state instanceof HumanoidRenderState humanoid) {
