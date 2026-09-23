@@ -28,7 +28,14 @@ public final class SimpleBlinkingScreen extends Screen {
 						SimpleBlinkingClient.config().enabled ? "Blinking: ON" : "Blinking: OFF"
 					));
 				}
-			).bounds(centerX - 75, height - 54, 150, 20).build()
+			).bounds(centerX - 155, height - 54, 150, 20).build()
+		);
+
+		addRenderableWidget(
+			Button.builder(
+				Component.literal("Preview blink"),
+				button -> SimpleBlinkingClient.blinkController().triggerPreviewBlink()
+			).bounds(centerX + 5, height - 54, 150, 20).build()
 		);
 
 		addRenderableWidget(
@@ -55,7 +62,7 @@ public final class SimpleBlinkingScreen extends Screen {
 
 		graphics.drawCenteredString(
 			font,
-			Component.literal("Next: click your eye pixels directly on your skin"),
+			Component.literal("v1.0.0: smooth eyelid animation"),
 			centerX,
 			60,
 			0xA0A0A0
@@ -67,6 +74,15 @@ public final class SimpleBlinkingScreen extends Screen {
 			centerX,
 			82,
 			0xFFFFFF
+		);
+
+		int percent = Math.round(SimpleBlinkingClient.blinkController().blinkProgress() * 100.0F);
+		graphics.drawCenteredString(
+			font,
+			Component.literal("Blink animation: " + percent + "% closed"),
+			centerX,
+			98,
+			0xCFCFCF
 		);
 	}
 
