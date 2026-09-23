@@ -17,14 +17,26 @@ public final class BlinkConfig {
 	private static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("simple-blinking.json");
 
 	public boolean enabled = true;
+
+	/**
+	 * Average time between blinks. A small random offset is added so blinking
+	 * does not look robotic.
+	 */
 	public int blinkIntervalMs = 2000;
 	public int blinkRandomnessMs = 250;
-	public int closedDurationMs = 140;
+
+	/**
+	 * Smooth animation phases.
+	 * open -> closing -> closed hold -> opening -> open
+	 */
+	public int closingDurationMs = 95;
+	public int closedHoldDurationMs = 45;
+	public int openingDurationMs = 120;
+
 	public boolean automaticEyelidColor = true;
 
 	/**
 	 * Skin pixel coordinates in the normal 64x64 skin texture.
-	 * The picker will populate these later from the config screen.
 	 */
 	public List<EyePixel> eyePixels = new ArrayList<>();
 
@@ -57,6 +69,12 @@ public final class BlinkConfig {
 		} catch (IOException exception) {
 			throw new RuntimeException("Failed to save Simple Blinking config", exception);
 		}
+	}
+
+	public int totalBlinkDurationMs() {
+		return Math.max(1, closingDurationMs)
+			+ Math.max(0, closedHoldDurationMs)
+			+ Math.max(1, openingDurationMs);
 	}
 
 	public record EyePixel(int x, int y) {
