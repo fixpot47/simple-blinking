@@ -2,19 +2,17 @@
 
 Client-side Fabric mod for Minecraft 26.3 that adds smooth blinking to your own Minecraft skin.
 
-## Simple Blinking 1.0.1
+## Simple Blinking 1.0.2
 
-- Shows your player model in the configuration screen.
-- Shows an enlarged 8x8 front-face picker using the loaded skin texture.
-- Each face pixel uses a real Minecraft widget hitbox, so selection works correctly with GUI scaling and Retina displays.
-- Click the exact eye pixels to select/deselect them.
+- F7 is registered using Minecraft 26.3's keyboard input type, so Controls shows **F7** instead of `key.keyboard.296`.
+- The eye picker uses direct screen hit-testing with visible hover feedback.
+- Clicking a face pixel immediately updates the selected-pixel counter and shows which skin pixel was changed.
+- Enlarged face picker for easier eye selection.
+- New **3x upper-body portrait**: head, torso and shoulders are shown instead of the tiny full-body preview.
 - Automatically samples an eyelid color from the closest opaque pixels around the selected eyes.
-- Also covers matching pixels on the hat/head overlay when needed.
-- Blinks naturally around every 2 seconds with a small random offset.
-- Smooth closing -> tiny closed hold -> smooth opening.
-- Press F7 to open or close the Simple Blinking menu.
-- Only changes rendering on your client; the original skin file is never overwritten.
-- Mod Menu integration.
+- Smooth closing -> short closed hold -> smooth opening.
+- F7 opens/closes the Simple Blinking menu.
+- The original skin file is never overwritten.
 
 ### Default animation timing
 

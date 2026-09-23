@@ -1,5 +1,6 @@
 package dev.fixpot.simpleblinking;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import dev.fixpot.simpleblinking.blink.BlinkController;
 import dev.fixpot.simpleblinking.config.BlinkConfig;
 import dev.fixpot.simpleblinking.screen.SimpleBlinkingScreen;
@@ -28,9 +29,13 @@ public final class SimpleBlinkingClient implements ClientModInitializer {
 			Identifier.fromNamespaceAndPath(MOD_ID, "main")
 		);
 
+		// Minecraft 26.3 switched keyboard input away from the old KEYSYM path.
+		// Register F7 as an actual KEYBOARD key so Controls displays "F7"
+		// instead of the raw translation key "key.keyboard.296".
 		openMenuKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
 			"key.simple_blinking.open_menu",
-			296,
+			InputConstants.Type.KEYBOARD,
+			InputConstants.KEY_F7,
 			category
 		));
 
