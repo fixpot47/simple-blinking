@@ -13,7 +13,6 @@ import org.jspecify.annotations.Nullable;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URLConnection;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -71,6 +70,10 @@ public final class SkinBlinkManager {
 		return eyelidArgb;
 	}
 
+	public @Nullable Identifier previewTexture() {
+		return isReady() ? ANIMATED_SKIN : null;
+	}
+
 	public @Nullable Identifier animatedTexture(float progress) {
 		if (!isReady()) {
 			return null;
@@ -95,7 +98,6 @@ public final class SkinBlinkManager {
 			return null;
 		}
 
-		// Restore the selected cells first, then apply this animation frame.
 		for (BlinkConfig.EyePixel eye : config.eyePixels) {
 			restorePixel(pixels, eye.x(), eye.y());
 			restoreHatPixel(pixels, eye.x(), eye.y());
@@ -156,7 +158,7 @@ public final class SkinBlinkManager {
 			URLConnection connection = URI.create(url).toURL().openConnection();
 			connection.setConnectTimeout(5000);
 			connection.setReadTimeout(7000);
-			connection.setRequestProperty("User-Agent", "Simple-Blinking/1.0.0");
+			connection.setRequestProperty("User-Agent", "Simple-Blinking/1.0.1");
 			try (InputStream input = connection.getInputStream()) {
 				return NativeImage.read(input);
 			}

@@ -4,9 +4,12 @@ import dev.fixpot.simpleblinking.SimpleBlinkingClient;
 import dev.fixpot.simpleblinking.config.BlinkConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -19,7 +22,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.client.model.HumanoidModel;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -38,6 +40,20 @@ public final class SimpleBlinkingScreen extends Screen {
 	@Override
 	protected void init() {
 		int centerX = width / 2;
+
+		// Use normal Screen widgets for every face cell. This is more reliable
+		// than manually hit-testing the full grid and also works correctly with
+		// Minecraft's GUI scaling on macOS/Retina displays.
+		for (int localY = 0; localY < FACE_PIXELS; localY++) {
+			for (int localX = 0; localX < FACE_PIXELS; localX++) {
+				addRenderableWidget(new EyePixelCell(
+					gridX() + localX * CELL,
+					gridY() + localY * CELL,
+					localX,
+					localY
+				));
+			}
+		}
 
 		addRenderableWidget(
 			Button.builder(
@@ -87,7 +103,7 @@ public final class SimpleBlinkingScreen extends Screen {
 		graphics.centeredText(font, title, centerX, 12, 0xFFFFFFFF);
 		graphics.centeredText(
 			font,
-			Component.literal("Click the eye pixels on the 8x8 face"),
+			Component.literal("Click the eye pixels on the enlarged face"),
 			centerX,
 			28,
 			0xFFBFC7D5
@@ -122,7 +138,7 @@ public final class SimpleBlinkingScreen extends Screen {
 
 		graphics.text(
 			font,
-			SimpleBlinkingClient.skinManager().status(),
+			SimpleBlinkingClient.skinManager().status() + "  |  F7: open/close",
 			gridX,
 			gridY + GRID_SIZE + 54,
 			0xFF8F9AAA,
@@ -139,9 +155,11 @@ public final class SimpleBlinkingScreen extends Screen {
 			return;
 		}
 
-		Identifier texture = player.getSkin().body().texturePath();
+		Identifier texture = SimpleBlinkingClient.skinManager().previewTexture();
+		if (texture == null) {
+			texture = player.getSkin().body().texturePath();
+		}
 
-		// Base front face: skin pixels 8..15, 8..15.
 		graphics.blit(
 			RenderPipelines.GUI_TEXTURED,
 			texture,
@@ -157,7 +175,6 @@ public final class SimpleBlinkingScreen extends Screen {
 			64
 		);
 
-		// Hat / second head layer, so the picker looks like the actual visible face.
 		graphics.blit(
 			RenderPipelines.GUI_TEXTURED,
 			texture,
@@ -188,7 +205,7 @@ public final class SimpleBlinkingScreen extends Screen {
 			int localY = pixel.y() - 8;
 			int px = x + localX * CELL;
 			int py = y + localY * CELL;
-			graphics.fill(px + 1, py + 1, px + CELL, py + CELL, 0x4477CCFF);
+			graphics.fill(px + 1, py + 1, px + CELL, py + CELL, 0x5577CCFF);
 			graphics.outline(px, py, CELL, CELL, 0xFFFFFFFF);
 		}
 
@@ -264,24 +281,9 @@ public final class SimpleBlinkingScreen extends Screen {
 			graphics.entity(state, 42.0F, translation, pose, camera, x0, y0, x1, y1);
 			graphics.centeredText(font, Component.literal("Your skin"), (x0 + x1) / 2, y1 + 6, 0xFFBFC7D5);
 		} catch (Throwable ignored) {
-			// The face picker remains usable even if another rendering mod blocks
-			// the inventory-style entity preview.
+			// The face picker stays usable even when another rendering mod
+			// interferes with the inventory-style entity preview.
 		}
-	}
-
-	@Override
-	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-		if (event.button() == 0) {
-			int x = gridX();
-			int y = gridY();
-			if (event.x() >= x && event.x() < x + GRID_SIZE && event.y() >= y && event.y() < y + GRID_SIZE) {
-				int localX = (int)((event.x() - x) / CELL);
-				int localY = (int)((event.y() - y) / CELL);
-				toggleEyePixel(8 + localX, 8 + localY);
-				return true;
-			}
-		}
-		return super.mouseClicked(event, doubleClick);
 	}
 
 	private void toggleEyePixel(int x, int y) {
@@ -307,6 +309,36 @@ public final class SimpleBlinkingScreen extends Screen {
 		SimpleBlinkingClient.saveConfig();
 		if (minecraft != null) {
 			minecraft.gui.setScreen(parent);
+		}
+	}
+
+	private final class EyePixelCell extends AbstractWidget {
+		private final int localX;
+		private final int localY;
+
+		private EyePixelCell(int x, int y, int localX, int localY) {
+			super(x, y, CELL, CELL, Component.empty());
+			this.localX = localX;
+			this.localY = localY;
+		}
+
+		@Override
+		public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+			if (!active || !visible || event.button() != 0 || !isMouseOver(event.x(), event.y())) {
+				return false;
+			}
+			toggleEyePixel(8 + localX, 8 + localY);
+			return true;
+		}
+
+		@Override
+		protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+			// Invisible hitbox: the picker texture/grid is drawn by the screen.
+		}
+
+		@Override
+		protected void updateWidgetNarration(NarrationElementOutput narration) {
+			// No narration text needed for the invisible pixel hitbox.
 		}
 	}
 }
